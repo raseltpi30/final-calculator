@@ -1,0 +1,28 @@
+/* Theme Name: Coder IT - Saasup
+Theme URI: https://coderitsolution.com
+Description: This is Coder IT Solution custom wordpress theme.
+Author: Rasel
+Author URI: https://saasup.me
+Version:1.0.0
+License: GNU General Public License v2 or later
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
+Text Domain: saasup
+Tags: coderit,coderitsolution,custom theme 
+
+
+*/
+#menu-footer-menu-1,#menu-footer-menu-2{
+    padding: 0;
+}
+.footer-content h3{
+    margin: 2.5rem 0;
+    font-size: 3rem !important;
+}
+.banner-img img{
+    border-radius: 5rem;
+    max-height: 60rem;
+    object-fit: cover;
+}
+.single-feature img {
+    margin: auto;
+}
