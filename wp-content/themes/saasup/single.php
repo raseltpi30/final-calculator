@@ -5,7 +5,7 @@
     <?php while(have_posts()) :the_post(); ?>
     <div class="row">
         <div class="col-12">
-          <div class="banner banner-img section-title mb-5" data-aos="zoom-in">
+          <div class="banner banner-img section-title mb-5">
             <?php the_post_thumbnail(); ?>
           </div>
         </div>
@@ -103,7 +103,7 @@
     <div class="container">
       <div class="row all-department align-items-center">
         <div class="col-md-6">
-          <div class="department-content" data-aos="zoom-in-down" data-aos-duration="1000">            
+          <div class="department-content">            
             <h2>Start your free trial today</h2>
             <p>It is a long established fact that a reader will be by the readable when looking at it layout. </p>
             <div class="department-btn">
@@ -113,7 +113,7 @@
           </div>
         </div>
         <div class="col-md-6">
-          <div class="department-img" data-aos="zoom-in" data-aos-duration="1000">
+          <div class="department-img">
             <img src="assets/images/department/1.png" alt="Department">
           </div>
         </div>

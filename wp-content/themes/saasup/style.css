@@ -26,3 +26,29 @@ Tags: coderit,coderitsolution,custom theme
 .single-feature img {
     margin: auto;
 }
+
+/* Add this to your style.css */
+.login-form-container, .registration-form-container {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.login-form-container input, .registration-form-container input {
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0 10px;
+}
+
+.login-error, .registration-error {
+    color: red;
+}
+
+.single-footer.item-4 {
+	background-color: var(--secondaryColor1);
+	padding: 6rem 2.5rem;
+	border-radius: 5rem;
+	padding: 2rem 2.5rem;
+}

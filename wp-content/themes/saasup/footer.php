@@ -4,7 +4,7 @@ $options = get_option('coderit');
 ?> 
 <footer class="footer">
     <div class="container">
-      <div class="footer-all row section-padding" data-aos="fade-up" data-aos-duration="1000">
+      <div class="footer-all row section-padding">
         <div class="col-xxl-4 col-lg-6">
           <div class="single-footer item-1">
             <div class="footer-img">

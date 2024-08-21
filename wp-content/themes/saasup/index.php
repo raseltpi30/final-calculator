@@ -6,7 +6,7 @@ $options = get_option('coderit');
     <div class="container">
       <div class="row">
         <div class="col-12">
-          <div class="banner section-title" data-aos="zoom-in">
+          <div class="banner section-title">
             <h1><?php echo $options['blog_title']; ?></h1>
             <p><?php echo $options['blog_description']; ?></p>
           </div>

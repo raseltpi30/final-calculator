@@ -127,6 +127,114 @@ require_once('inc/theme-options/codestar-framework.php');
 require_once('inc/theme-options/options.php');
 require_once('inc/class-wp-bootstrap-navwalker.php');
 
+add_action('wp_login_failed', 'custom_login_failed');
+
+function custom_login_failed($username) {
+    $referrer = wp_get_referer();
+    wp_redirect($referrer . '?login=failed');
+    exit;
+}
+
+add_action('init', 'custom_user_registration');
+function custom_user_registration() {
+    if (isset($_POST['user_login']) && isset($_POST['user_email'])) {
+        $username = sanitize_user($_POST['user_login']);
+        $email = sanitize_email($_POST['user_email']);
+        
+        $errors = new WP_Error();
+
+        if (empty($username) || empty($email)) {
+            $errors->add('field', 'Required form field is missing');
+        }
+
+        if (!is_email($email)) {
+            $errors->add('email_invalid', 'Email is not valid');
+        }
+
+        if (username_exists($username)) {
+            $errors->add('username_exists', 'Username already exists');
+        }
+
+        if (email_exists($email)) {
+            $errors->add('email_exists', 'Email already exists');
+        }
+
+        if (is_wp_error($errors) && !empty($errors->errors)) {
+            wp_redirect(site_url('page-register/?registration=failed'));
+            exit;
+        } else {
+            $user_id = wp_create_user($username, wp_generate_password(), $email);
+            if (!is_wp_error($user_id)) {
+                wp_redirect(site_url('wp-login.php?checkemail=registered'));
+                exit;
+            }
+        }
+    }
+}
+
+// for calculatoor 
+
+function my_theme_create_custom_table() {
+    global $wpdb;
+
+    $table_name = $wpdb->prefix . 'custom_name_email'; // Name of the custom table
+    $charset_collate = $wpdb->get_charset_collate();
+
+    $sql = "CREATE TABLE IF NOT EXISTS $table_name (
+        id mediumint(9) NOT NULL AUTO_INCREMENT,
+        name varchar(255) NOT NULL,
+        email varchar(255) NOT NULL,
+        created_at datetime DEFAULT CURRENT_TIMESTAMP NOT NULL,
+        PRIMARY KEY  (id)
+    ) $charset_collate;";
+
+    require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
+    dbDelta($sql);
+}
+add_action('after_switch_theme', 'my_theme_create_custom_table');
+
+// Handle AJAX request
+function my_theme_handle_form_submission() {
+    check_ajax_referer('my_theme_nonce', 'nonce');
+
+    global $wpdb;
+
+    if (isset($_POST['city_name']) && isset($_POST['email'])) {
+        $table_name = $wpdb->prefix . 'custom_name_email';
+        $city_name = sanitize_text_field($_POST['city_name']);
+        $email = sanitize_email($_POST['email']);
+
+        $inserted = $wpdb->insert(
+            $table_name,
+            array(
+                'name' => $city_name,
+                'email' => $email,
+                'created_at' => current_time('mysql')
+            )
+        );
+
+        if ($inserted !== false) {
+            wp_send_json_success('Data inserted successfully!');
+        } else {
+            wp_send_json_error('Failed to insert data.');
+        }
+    } else {
+        wp_send_json_error('Required fields are missing.');
+    }
+
+    wp_die();
+}
+add_action('wp_ajax_my_theme_submit_form', 'my_theme_handle_form_submission');
+add_action('wp_ajax_nopriv_my_theme_submit_form', 'my_theme_handle_form_submission');
+
+
+
+
+
+
+
+
+
 
 
 

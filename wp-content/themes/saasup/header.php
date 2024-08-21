@@ -13,9 +13,7 @@ $options = get_option('coderit');
   <meta name="description" content="<?php echo bloginfo('description'); ?>">
 
   <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-
-  
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">  
   <?php wp_head(); ?>
 </head>
 <body>
