@@ -102,6 +102,7 @@
                                         <div class="form-group col-md-4">
                                             <input type="text" class="form-control" id="pickup_street" name="pickup_street" placeholder="Street">
                                             <div id="pickup_street_error" class="error">Pickup street is required</div>
+                                            <div id="result"></div>
                                         </div>
                                         <div class="form-group col-md-4">
                                             <input type="text" class="form-control" id="pickup_city" name="pickup_city" placeholder="City">
@@ -219,7 +220,7 @@
                         <div class="col-md-2 book-form__section p-3 d-flex justify-content-center align-items-end left-side">
                             <div class="price_details">
                                 <div class="total">
-                                    <div id="displayValue" style="font-size: 26px;" class="display-value">Total: $0</div>
+                                    <div id="displayValue" style="font-size: 26px;" class="display-value">Total: $<span style="color:red">0</span></div>
                                 </div>
                                 <button type="submit" name="submit" class="btn btn-primary m-1 g-recaptcha">Submit Trip</button>
                             </div>
@@ -233,9 +234,83 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     $(document).ready(function($) {
+        function validateField(fieldId, errorId) {
+            if ($(fieldId).val().trim() === '') {
+                $(errorId).show();
+            } else {
+                $(errorId).hide();
+            }
+        }
+
+        // On blur and change events for input fields
+        $('#first_name').on('blur change', function() {
+            validateField('#first_name', '#first_name_error');
+        });
+
+        $('#last_name').on('blur change', function() {
+            validateField('#last_name', '#last_name_error');
+        });
+
+        $('#dob').on('blur change', function() {
+            validateField('#dob', '#dob_error');
+        });
+
+        $('#phone').on('blur change', function() {
+            validateField('#phone', '#phone_error');
+        });
+
+        $('#email').on('blur change', function() {
+            const email = $('#email').val().trim();
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (email === '') {
+                $('#email_error').text('Please enter a valid email address').show();
+            } else if (!emailPattern.test(email)) {
+                $('#email_error').text('Please enter a valid email address').show();
+            } else {
+                $('#email_error').hide();
+            }
+        });
+
+        $('#pickup_street').on('blur change', function() {
+            validateField('#pickup_street', '#pickup_street_error');
+        });
+
+        $('#pickup_city').on('blur change', function() {
+            validateField('#pickup_city', '#pickup_city_error');
+        });
+
+        $('#pickup_state').on('blur change', function() {
+            validateField('#pickup_state', '#pickup_state_error');
+        });
+
+        $('#destination_street').on('blur change', function() {
+            validateField('#destination_street', '#destination_street_error');
+        });
+
+        $('#destination_city').on('blur change', function() {
+            validateField('#destination_city', '#destination_city_error');
+        });
+
+        $('#destination_state').on('blur change', function() {
+            validateField('#destination_state', '#destination_state_error');
+        });
+        $('#destination_state').on('blur change', function() {
+            validateField('#destination_state', '#destination_state_error');
+        });
+        $('#travel_date').on('blur change', function() {
+            validateField('#travel_date', '#travel_date_error');
+        });
+        $('#travel_time').on('blur change', function() {
+            validateField('#travel_time', '#travel_time_error');
+        });
+        $('#service_level').on('blur change', function() {
+            validateField('#service_level', '#service_level_error');
+        });
+
+
         $('#customForm').on('submit', function(e) {
             e.preventDefault(); // Prevent default form submission  
-            var isValid = true;        
+            var isValid = true;
 
             // Clear previous errors
             $(".error").hide();
@@ -279,13 +354,15 @@
                     url: url,
                     type: 'POST',
                     data: $(this).serialize(),
-                    success: function(data) {
-                        console.log(data);
+                    success: function(response) {
+                        var id = response.inserted_id;
                         $('form')[0].reset();
-                        $('#msg').show().html(data);
+                        $('#msg').show().html(response.message);
                         setTimeout(function() {
-                            $('#msg').hide();
-                        }, 5000)
+                            // Construct the URL with the inserted_id as a query parameter
+                            var redirectUrl = '<?php echo home_url('/order-page-template'); ?>?inserted_id=' + encodeURIComponent(id);
+                            window.location.href = redirectUrl;
+                        }, 1000);
                     }
                 });
             }
@@ -294,7 +371,9 @@
             var selectedValue = $(this).val();
 
             // Update the content of the div with the selected value
-            $('#displayValue').text('Total: $' + (selectedValue ? selectedValue.charAt(0).toUpperCase() + selectedValue.slice(1) : 'None'));
+            // $('#displayValue').text('Total: $' + (selectedValue ? selectedValue.charAt(0).toUpperCase() + selectedValue.slice(1) : 'None'));
+            $('#displayValue').html('Total: $<span style="color: green;">' + (selectedValue ? selectedValue.charAt(0).toUpperCase() + selectedValue.slice(1) : '0') + '</span>');
+
         });
     });
 </script>
